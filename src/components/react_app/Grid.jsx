@@ -32,7 +32,7 @@ export default function Grid(props) {
   const GridRef = React.useRef(null);
 
   React.useEffect(() => {
-    console.log("useEffect", props.settings.test1);
+    //console.log("useEffect", props.settings.test1);
     onUpdatePageData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.settings.test1]);
@@ -249,12 +249,12 @@ export default function Grid(props) {
   );
 
   const onSelectedColumnsChange = React.useCallback((newVal, trigger) => {
-    console.log("onSelectedColumnsChange 222", newVal, trigger);
+    //console.log("onSelectedColumnsChange 222", newVal, trigger);
     if (trigger === "group") return;
   }, []);
 
   const onSelected = React.useCallback((newSel) => {
-    console.log("onSelectedColumnsChange 3", newSel);
+    //console.log("onSelectedColumnsChange 3", newSel);
   }, []);
 
   /* const onSelectedColumnsChange = React.useCallback((newVal, trigger) => {
@@ -268,7 +268,7 @@ export default function Grid(props) {
   });
  */
   const onCellClicked = React.useCallback((cell, event) => {
-    console.log("onCellClicked GridRef", props, GridRef);
+    //console.log("onCellClicked GridRef", props, GridRef);
     GridRef.current.emit("onUpdate:modelValue", "bbb");
 
     props.clicked(cell, event);
@@ -318,11 +318,11 @@ export default function Grid(props) {
   const onUpdatePageData = () => {
     /*  const randomRow1 = 0
     const randomRow2 = gridStore.GridData.length - 1; */
-    let cells = gridStore.GridData.map((_, R) =>
-      Array.from({ length: props.columns.length }, (_, C) => ({ cell: [C, R] }))
+    let cells = gridStore.GridData.map((x, r) =>
+      Array.from({ length: props.columns.length }, (x, c) => ({ cell: [c, r] }))
     ).flat();
 
-    console.log("cells", cells);
+    //console.log("cells", cells);
     GridRef.current?.updateCells(
       cells
       // [randomRow1,1, randomRow2].map((cellindex) => ({ cell: [9, cellindex] }))

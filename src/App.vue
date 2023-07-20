@@ -89,7 +89,7 @@ const ThemeOverride = (row) => {
 
     <button @click="Sirala">sırala</button><button @click="UpdateData">güncelle</button>
     app: {{ data[0].Total }}
-    <ReactGrid ref="refffffff" :data="data" :columns="columns" :update="Update" :theme="Theme" :clicked="Clicked"
+    <ReactGrid ref="refffffff" :columns="columns" :update="Update" :theme="Theme" :clicked="Clicked"
       :headerclicked="HeaderClicked" :selected="Selected" :settings="settings" :themeoverride="ThemeOverride" />
   </div>
 </template>

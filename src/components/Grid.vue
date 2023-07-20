@@ -29,7 +29,7 @@ const GridStore = /*$gridStore.*/useGridStore()
 const { GridData/* , GridColumns */ } = storeToRefs(GridStore)
 
 
-const gridRefVue = ref()
+//const gridRefVue = ref()
 
 
 //onMounted(async () => {
@@ -51,7 +51,7 @@ defineExpose({ updatedata })
   
 <template>
   <ProviderInVuePure>
-    <Grid ref="gridRefVue" :columns="columns" :update="update" :theme="theme" :clicked="clicked"
+    <Grid :columns="columns" :update="update" :theme="theme" :clicked="clicked"
       :headerclicked="headerclicked" :selected="selected" :settings="settings" :themeoverride="themeoverride" />
   </ProviderInVuePure>
 </template>
