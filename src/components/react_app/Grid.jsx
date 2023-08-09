@@ -367,8 +367,7 @@ export default function Grid(props) {
         columns={props.columns}
         rows={gridStore.GridData.length}
       />
-      <div id="portal" />
-      <div>IsSearch:{gridStore.IsSearch}</div>
+      <div id="portal" /> 
     </>
   );
 }
