@@ -4,8 +4,7 @@ export const useGridStore = defineStore('grid', {
   state: () => {
     return {
       GridData: [],
-      GridColumns: [],
-      IsSearch: false
+      GridColumns: []
     }
   },
   // could also be defined as

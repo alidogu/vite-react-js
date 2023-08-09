@@ -327,10 +327,7 @@ export default function Grid(props) {
       // [randomRow1,1, randomRow2].map((cellindex) => ({ cell: [9, cellindex] }))
     );
   };
-const [showSearch, setShowSearch] = React.useState(true);
-  const onSearchClose = React.useCallback(() => setShowSearch(false), []);
-  
-
+ 
   const headerIcons = React.useMemo(() => {
     return {
       "sort-asc": (p) =>
@@ -348,16 +345,15 @@ const [showSearch, setShowSearch] = React.useState(true);
         gridSelection={gridSelection}
         ref={GridRef}
         theme={props.theme}
-        rowMarkers={"both"}
+        rowMarkers="both"
         onPaste={true}
         width={props.settings.width || 1800}
         fillHandle={true}
         overscrollX={0}
         overscrollY={0}
-        showSearch={showSearch}
-        onSearchClose={onSearchClose}
         keybindings={{ search: true }}
         rowHeight={props.settings.rowHeight || 30}
+        freezeColumns={2}
         onCellClicked={onCellClicked}
         onHeaderClicked={onHeaderClicked}
         onGridSelectionChange={onGridSelectionChange}

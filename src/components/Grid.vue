@@ -1,5 +1,5 @@
 <script setup>
-import {  onMounted , onBeforeUnmount,/* onUnmounted, */ ref/* , inject  */ } from 'vue'
+import { /* onMounted , onBeforeUnmount, onUnmounted, */ ref/* , inject  */ } from 'vue'
 import { storeToRefs } from 'pinia'
 import { /* createReactMissVue, */ applyPureReactInVue } from 'veaury'
 //const Grid = lazyPureReactInVue(() => import('./react_app/Grid'))
@@ -24,38 +24,22 @@ const props = defineProps({
 
 //const $gridStore = inject('$gridStore')
 
-const GridStore = /*$gridStore.*/useGridStore()
+const GridStore = useGridStore()
 
-const { GridData, IsSearch /* , GridColumns */ } = storeToRefs(GridStore)
+const { GridData } = storeToRefs(GridStore)
 
 
-//const gridRefVue = ref()
 
-onMounted(() => {
-  document.addEventListener('keypress', searchKeyBinding, true);
-})
-
-onBeforeUnmount(() => {
-  document.removeEventListener('keypress', searchKeyBinding, true);
-})
-
-const searchKeyBinding = ({ keyCode }) => {
-  console.log('searchKeyBinding',keyCode)
-  if (keyCode === 102) {
-    IsSearch.value = !IsSearch.value
-  }
-};
- 
+// onMounted(() => {
+//   //
+// })
 
 function updatedata(data) {
   GridData.value = data
 }
+ 
 
-function search(data) {
-  IsSearch.value = data
-}
-
-defineExpose({ updatedata, search })
+defineExpose({ updatedata })
 </script>
   
 <template>

@@ -34,11 +34,7 @@ const UpdateData = () => {
       settings.value.test1 = 'b' + Math.random() * (99 - 1) + 1;
       refffffff.value.updatedata(dataUp)
 }
-const IsSearch = ref(false)
-const Search = () => {
-  IsSearch.value = !IsSearch.value
-  refffffff.value.search(IsSearch)
-}
+ 
 const Sirala = (cell, event) => {
   //columns.value[0].icon = columns.value[0].icon == 'sort-asc' ? 'sort-desc' : 'sort-asc'
   //console.log("Update VUE", data.value);
@@ -91,7 +87,7 @@ const ThemeOverride = (row) => {
   <div
     style="border-radius: 9px;box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2), 0 0 1px rgba(0, 0, 0, 0.4); height: 500px; width: 1800px;">
 
-    <button @click="Sirala">sırala</button><button @click="UpdateData">güncelle</button><button @click="Search">Ara</button>
+    <button @click="Sirala">sırala</button><button @click="UpdateData">güncelle</button> 
     app: {{ data[0].Total }}
     <ReactGrid ref="refffffff" :columns="columns" :update="Update" :theme="Theme" :clicked="Clicked"
       :headerclicked="HeaderClicked" :selected="Selected" :settings="settings" :themeoverride="ThemeOverride" />
