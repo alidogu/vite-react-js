@@ -1,5 +1,5 @@
 <script setup>
-import { /* onMounted, onUnmounted, */ ref/* , inject  */ } from 'vue'
+import {  onMounted , onBeforeUnmount,/* onUnmounted, */ ref/* , inject  */ } from 'vue'
 import { storeToRefs } from 'pinia'
 import { /* createReactMissVue, */ applyPureReactInVue } from 'veaury'
 //const Grid = lazyPureReactInVue(() => import('./react_app/Grid'))
@@ -26,32 +26,41 @@ const props = defineProps({
 
 const GridStore = /*$gridStore.*/useGridStore()
 
-const { GridData/* , GridColumns */ } = storeToRefs(GridStore)
+const { GridData, IsSearch /* , GridColumns */ } = storeToRefs(GridStore)
 
 
 //const gridRefVue = ref()
 
+onMounted(() => {
+  document.addEventListener('keypress', searchKeyBinding, true);
+})
 
-//onMounted(async () => {
-//console.log('onMounted gridRefVue', gridRefVue.value)
-/*console.log('gridRef keys', Object.keys(gridRef.value)); */
-//console.log('gridRef GridStore', GridStore);
-// gridRef.value._value.props.passedProps
-// })
-// const localdata = ref(JSON.parse(JSON.stringify(props.data)))
-//})
+onBeforeUnmount(() => {
+  document.removeEventListener('keypress', searchKeyBinding, true);
+})
 
+const searchKeyBinding = ({ keyCode }) => {
+  console.log('searchKeyBinding',keyCode)
+  if (keyCode === 102) {
+    IsSearch.value = !IsSearch.value
+  }
+};
+ 
 
 function updatedata(data) {
   GridData.value = data
 }
 
-defineExpose({ updatedata })
+function search(data) {
+  IsSearch.value = data
+}
+
+defineExpose({ updatedata, search })
 </script>
   
 <template>
   <ProviderInVuePure>
-    <Grid :columns="columns" :update="update" :theme="theme" :clicked="clicked"
+    <Grid :columns="columns" :update="update" :theme="theme" :clicked="clicked" 
       :headerclicked="headerclicked" :selected="selected" :settings="settings" :themeoverride="themeoverride" />
   </ProviderInVuePure>
 </template>

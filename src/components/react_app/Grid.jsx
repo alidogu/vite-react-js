@@ -31,8 +31,7 @@ export default function Grid(props) {
   const cellProps = useCustomCells(cells);
   const GridRef = React.useRef(null);
 
-  React.useEffect(() => {
-    //console.log("useEffect", props.settings.test1);
+  React.useEffect(() => { 
     onUpdatePageData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.settings.test1]);
@@ -52,7 +51,7 @@ export default function Grid(props) {
     //     : gridStore.GridData
     // );
     const [col, row] = cell;
-    const indexes = props.columns.map((x) => x.id); //["name", "company", "email","Category", "phone"];
+    const indexes = props.columns.map((x) => x.name || x.key ); //["name", "company", "email","Category", "phone"];
     const column = props.columns[col];
     //console.log('cell column',column)
     const Type = column.type;
@@ -318,8 +317,8 @@ export default function Grid(props) {
   const onUpdatePageData = () => {
     /*  const randomRow1 = 0
     const randomRow2 = gridStore.GridData.length - 1; */
-    let cells = gridStore.GridData.map((x, r) =>
-      Array.from({ length: props.columns.length }, (x, c) => ({ cell: [c, r] }))
+    let cells = gridStore?.GridData?.map((x, r) =>
+      Array.from({ length: props?.columns?.length || 1 }, (x, c) => ({ cell: [c, r] }))
     ).flat();
 
     //console.log("cells", cells);
@@ -328,6 +327,9 @@ export default function Grid(props) {
       // [randomRow1,1, randomRow2].map((cellindex) => ({ cell: [9, cellindex] }))
     );
   };
+const [showSearch, setShowSearch] = React.useState(true);
+  const onSearchClose = React.useCallback(() => setShowSearch(false), []);
+  
 
   const headerIcons = React.useMemo(() => {
     return {
@@ -352,6 +354,9 @@ export default function Grid(props) {
         fillHandle={true}
         overscrollX={0}
         overscrollY={0}
+        showSearch={showSearch}
+        onSearchClose={onSearchClose}
+        keybindings={{ search: true }}
         rowHeight={props.settings.rowHeight || 30}
         onCellClicked={onCellClicked}
         onHeaderClicked={onHeaderClicked}
@@ -366,7 +371,8 @@ export default function Grid(props) {
         columns={props.columns}
         rows={gridStore.GridData.length}
       />
-      <div id="portal"></div>
+      <div id="portal" />
+      <div>IsSearch:{gridStore.IsSearch}</div>
     </>
   );
 }
