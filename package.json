@@ -1,6 +1,6 @@
 {
   "name": "@alidogu/react-grid",
-  "version": "0.0.40",
+  "version": "0.0.41",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -43,7 +43,8 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
     "react-select": "^5.7.4",
-    "vite": "^4.4.9"
+    "vite": "^4.4.9",
+    "react-laag":"^2.0.5"
   },
   "description": "glide-data-grid vue",
   "keywords": [

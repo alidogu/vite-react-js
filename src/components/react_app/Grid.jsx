@@ -4,6 +4,7 @@ import DataEditor, {
   useCustomCells,
   CompactSelection,
 } from "@glideapps/glide-data-grid";
+import { useLayer } from "react-laag";
 import DropdownCellRenderer from "./cells/dropdown-cell";
 import ButtonCellRenderer from "./cells/button-cell";
 
@@ -31,7 +32,7 @@ export default function Grid(props) {
   const cellProps = useCustomCells(cells);
   const GridRef = React.useRef(null);
 
-  React.useEffect(() => { 
+  React.useEffect(() => {
     onUpdatePageData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.settings.test1]);
@@ -51,7 +52,7 @@ export default function Grid(props) {
     //     : gridStore.GridData
     // );
     const [col, row] = cell;
-    const indexes = props.columns.map((x) => x.name || x.key ); //["name", "company", "email","Category", "phone"];
+    const indexes = props.columns.map((x) => x.name || x.key); //["name", "company", "email","Category", "phone"];
     const column = props.columns[col];
     //console.log('cell column',column)
     const Type = column.type;
@@ -146,12 +147,11 @@ export default function Grid(props) {
         dataValue.toString().includes(".") &&
         dataValue.toString().includes(",");
       const CheckComma = dataValue.toString().includes(",");
-      if (CheckDotComma) { 
+      if (CheckDotComma) {
         dataValue = dataValueFormat.replace(".", "").replace(",", ".");
         dataValueFormat = dataValueFormat.replace(".", "").replace(",", ".");
         //console.log("CheckDotComma çalıştı", dataValueFormat);
-      }
-      else if (CheckComma) {
+      } else if (CheckComma) {
         dataValue = dataValueFormat.replace(".", "").replace(",", ".");
         dataValueFormat = dataValueFormat.replace(".", "").replace(",", ".");
       }
@@ -178,7 +178,7 @@ export default function Grid(props) {
       const CheckDotComma =
         dataValue.toString().includes(".") &&
         dataValue.toString().includes(",");
-       const CheckComma = dataValue.toString().includes(",");
+      const CheckComma = dataValue.toString().includes(",");
       if (CheckDotComma) {
         dataValue = dataValueFormat.replace(".", "").replace(",", ".");
         dataValueFormat = dataValueFormat.replace(".", "").replace(",", ".");
@@ -214,7 +214,7 @@ export default function Grid(props) {
         kind: GridCellKind.Text,
         allowOverlay: true,
         readonly: ReadOnly,
-        copyData: "dataValue.toString()",
+        copyData: dataValue.toString(),
         displayData: dataValue.toString(),
         data: dataValue.toString(),
       };
@@ -327,7 +327,9 @@ export default function Grid(props) {
     /*  const randomRow1 = 0
     const randomRow2 = gridStore.GridData.length - 1; */
     let cells = gridStore?.GridData?.map((x, r) =>
-      Array.from({ length: props?.columns?.length || 1 }, (x, c) => ({ cell: [c, r] }))
+      Array.from({ length: props?.columns?.length || 1 }, (x, c) => ({
+        cell: [c, r],
+      }))
     ).flat();
 
     //console.log("cells", cells);
@@ -336,7 +338,7 @@ export default function Grid(props) {
       // [randomRow1,1, randomRow2].map((cellindex) => ({ cell: [9, cellindex] }))
     );
   };
- 
+
   const headerIcons = React.useMemo(() => {
     return {
       "sort-asc": (p) =>
@@ -346,6 +348,58 @@ export default function Grid(props) {
     };
   }, []);
 
+  const [tooltip, setTooltip] = React.useState();
+
+  const timeoutRef = React.useRef(0);
+
+  const onItemHovered = React.useCallback((args) => {
+    if (args.kind === "cell") {
+      console.log("onItemHovered", args);
+      console.log(
+        "onItemHovered data",
+        getContent([args.location[0], args.location[1]])
+      );
+      console.log("onItemHovered columns", props.columns[args.location[0]].name);
+      const getCellData = getContent([args.location[0], args.location[1]]);
+      const CellTitle = getCellData.displayData || getCellData.copyData;
+      if (CellTitle) {
+        window.clearTimeout(timeoutRef.current);
+        setTooltip(undefined);
+        timeoutRef.current = window.setTimeout(() => {
+          setTooltip({
+            val: `${CellTitle} `,
+            bounds: {
+              // translate to react-laag types
+              left: args.bounds.x,
+              top: args.bounds.y,
+              width: args.bounds.width,
+              height: args.bounds.height,
+              right: args.bounds.x + args.bounds.width,
+              bottom: args.bounds.y + args.bounds.height,
+            },
+          });
+        }, 200);
+      }
+    } else {
+      window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = 0;
+      setTooltip(undefined);
+    }
+  }, []);
+
+  React.useEffect(() => () => window.clearTimeout(timeoutRef.current), []);
+
+  const isOpen = tooltip !== undefined;
+  const { renderLayer, layerProps } = useLayer({
+    isOpen,
+    triggerOffset: 4,
+    auto: true,
+    container: "portal",
+    trigger: {
+      getBounds: () => tooltip?.bounds ?? zeroBounds,
+    },
+  });
+
   return (
     <>
       <DataEditor
@@ -353,6 +407,7 @@ export default function Grid(props) {
         /* selectedColumns={selectedColumns} */
         gridSelection={gridSelection}
         ref={GridRef}
+        onItemHovered={onItemHovered}
         theme={props.theme}
         rowMarkers="both"
         onPaste={true}
@@ -376,6 +431,22 @@ export default function Grid(props) {
         columns={props.columns}
         rows={gridStore.GridData.length}
       />
+      {isOpen &&
+        renderLayer(
+          <div
+            {...layerProps}
+            style={{
+              ...layerProps.style,
+              padding: "8px 12px",
+              color: "white",
+              font: "500 13px Inter",
+              backgroundColor: "rgba(0, 0, 0, 0.85)",
+              borderRadius: 9,
+            }}
+          >
+            {tooltip.val}
+          </div>
+        )}
       <div id="portal" />
     </>
   );
