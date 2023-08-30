@@ -1,13 +1,13 @@
 {
   "name": "@alidogu/react-grid",
-  "version": "0.0.38",
+  "version": "0.0.40",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "private": false,
   "publishConfig": {
     "access": "public"
-  },
+  }, 
   "exports": {
     ".": "./dist/index.js",
     "./styles.css": "./dist/style.css"

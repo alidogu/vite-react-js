@@ -112,7 +112,7 @@ export default function Grid(props) {
           color: ["accentColor", "accentFg"],
           borderColor: "#9155fd",
           borderRadius: 9,
-          title: "Detay Gör",
+          title: column.buttontitle || "Detay",
           onClick: () => column.Clicked(dataValue),
         },
       };
@@ -138,7 +138,7 @@ export default function Grid(props) {
       };
     } else if (Type === "number" || Type === "int") {
       const dataRow = gridStore.GridData[row];
-      const dataValue = dataRow[indexes[col]] || 0;
+      let dataValue = dataRow[indexes[col]] || 0;
       //console.log("dataValue", dataValue);
 
       let dataValueFormat = dataValue;
@@ -146,19 +146,24 @@ export default function Grid(props) {
         dataValue.toString().includes(".") &&
         dataValue.toString().includes(",");
       const CheckComma = dataValue.toString().includes(",");
-      if (CheckDotComma)
+      if (CheckDotComma) { 
+        dataValue = dataValueFormat.replace(".", "").replace(",", ".");
         dataValueFormat = dataValueFormat.replace(".", "").replace(",", ".");
-      else if (CheckComma)
+        //console.log("CheckDotComma çalıştı", dataValueFormat);
+      }
+      else if (CheckComma) {
+        dataValue = dataValueFormat.replace(".", "").replace(",", ".");
         dataValueFormat = dataValueFormat.replace(".", "").replace(",", ".");
+      }
 
       // console.log("CheckDotComma", CheckDotComma);
       const formatter = new Intl.NumberFormat("tr-TR", {});
-      const currency = formatter.format(dataValueFormat || 0);
+      const numberFormat = formatter.format(dataValueFormat || 0);
 
       return {
         kind: GridCellKind.Text,
         copyData: dataValue,
-        displayData: currency,
+        displayData: numberFormat,
         allowOverlay: true,
         data: dataValue,
         readonly: ReadOnly,
@@ -166,18 +171,22 @@ export default function Grid(props) {
       };
     } else if (Type === "money") {
       const dataRow = gridStore.GridData[row];
-      const dataValue = dataRow[indexes[col]] || 0;
+      let dataValue = dataRow[indexes[col]] || 0;
       //console.log("dataValue", dataValue);
 
       let dataValueFormat = dataValue;
       const CheckDotComma =
         dataValue.toString().includes(".") &&
         dataValue.toString().includes(",");
-      const CheckComma = dataValue.toString().includes(",");
-      if (CheckDotComma)
+       const CheckComma = dataValue.toString().includes(",");
+      if (CheckDotComma) {
+        dataValue = dataValueFormat.replace(".", "").replace(",", ".");
         dataValueFormat = dataValueFormat.replace(".", "").replace(",", ".");
-      else if (CheckComma)
+        //console.log("CheckDotComma çalıştı", dataValueFormat);
+      } else if (CheckComma) {
+        dataValue = dataValueFormat.replace(".", "").replace(",", ".");
         dataValueFormat = dataValueFormat.replace(".", "").replace(",", ".");
+      }
 
       // console.log("CheckDotComma", CheckDotComma);
       const PriceFormater = new Intl.NumberFormat("tr-TR", {
@@ -185,14 +194,14 @@ export default function Grid(props) {
         currency: "TRY",
       });
 
-      const currency = PriceFormater.format(dataValueFormat || 0);
+      const currencyFormat = PriceFormater.format(dataValueFormat || 0);
 
       return {
         kind: GridCellKind.Text,
-        copyData: currency,
-        displayData: currency,
+        copyData: currencyFormat,
+        displayData: currencyFormat,
         allowOverlay: true,
-        data: currency,
+        data: dataValue,
         readonly: ReadOnly,
         themeOverride: theme,
       };
@@ -352,8 +361,8 @@ export default function Grid(props) {
         overscrollX={0}
         overscrollY={0}
         keybindings={{ search: true }}
-        rowHeight={props.settings.rowHeight || 30}
-        freezeColumns={2}
+        rowHeight={props.settings.rowHeight || 25}
+        freezeColumns={props.settings.freezeColumns || 0}
         onCellClicked={onCellClicked}
         onHeaderClicked={onHeaderClicked}
         onGridSelectionChange={onGridSelectionChange}
@@ -367,7 +376,7 @@ export default function Grid(props) {
         columns={props.columns}
         rows={gridStore.GridData.length}
       />
-      <div id="portal" /> 
+      <div id="portal" />
     </>
   );
 }
