@@ -354,12 +354,12 @@ export default function Grid(props) {
 
   const onItemHovered = React.useCallback((args) => {
     if (args.kind === "cell") {
-      console.log("onItemHovered", args);
-      console.log(
-        "onItemHovered data",
-        getContent([args.location[0], args.location[1]])
-      );
-      console.log("onItemHovered columns", props.columns[args.location[0]].name);
+      // console.log("onItemHovered", args);
+      // console.log(
+      //   "onItemHovered data",
+      //   getContent([args.location[0], args.location[1]])
+      // );
+      // console.log("onItemHovered columns", props.columns[args.location[0]].name);
       const getCellData = getContent([args.location[0], args.location[1]]);
       const CellTitle = getCellData.displayData || getCellData.copyData;
       if (CellTitle) {
