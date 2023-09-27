@@ -205,6 +205,38 @@ export default function Grid(props) {
         readonly: ReadOnly,
         themeOverride: theme,
       };
+    } else if (Type === "url") {
+      const dataRow = gridStore.GridData[row];
+      let dataValue = dataRow[indexes[col]] || "";
+      return {
+        kind: GridCellKind.Uri,
+        allowOverlay: false,
+        data: dataValue,
+        displayData: 'asas',
+        readonly: ReadOnly,
+        themeOverride: theme,
+      };
+    } else if (Type === "bool") {
+      const dataRow = gridStore.GridData[row];
+      let dataValue = dataRow[indexes[col]] || false;
+      return {
+        kind: GridCellKind.Boolean,
+        allowOverlay: false,
+        data: dataValue,
+        readonly: ReadOnly,
+        themeOverride: theme,
+      };
+    } else if (Type === "image") {
+      const dataRow = gridStore.GridData[row];
+      let dataValue = dataRow[indexes[col]] || false;
+      return {
+        kind: GridCellKind.Image,
+        allowOverlay: false,
+        data: [dataValue],
+        readonly: true,
+        allowAdd: false,
+        themeOverride: theme,
+      };
     } else {
       const dataRow = gridStore.GridData[row];
 

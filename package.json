@@ -1,13 +1,13 @@
 {
   "name": "@alidogu/react-grid",
-  "version": "0.0.42",
+  "version": "0.0.43",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "private": false,
   "publishConfig": {
     "access": "public"
-  }, 
+  },
   "exports": {
     ".": "./dist/index.js",
     "./styles.css": "./dist/style.css"
@@ -25,26 +25,26 @@
     "up": "taze major -I"
   },
   "dependencies": {
-    "@glideapps/glide-data-grid": "^5.2.1",
-    "@glideapps/glide-data-grid-source": "^5.2.1",
+    "@glideapps/glide-data-grid": "^5.3.0",
+    "@glideapps/glide-data-grid-source": "^5.3.0",
     "@vitejs/plugin-react": "^3.1.0",
-    "@vitejs/plugin-vue-jsx": "^3.0.1",
-    "core-js": "^3.32.0",
+    "@vitejs/plugin-vue-jsx": "^3.0.2",
+    "core-js": "^3.32.2",
     "lodash": "^4.17.21",
     "marked": "^4.3.0",
     "pinia": "^2.1.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-responsive-carousel": "^3.2.23",
-    "taze": "^0.11.2",
+    "taze": "^0.11.3",
     "veaury": "^2.3.12",
     "vue": "^3.3.4"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.2.3",
-    "react-select": "^5.7.4",
-    "vite": "^4.4.9",
-    "react-laag":"^2.0.5"
+    "@vitejs/plugin-vue": "^4.3.4",
+    "react-laag": "^2.0.5",
+    "react-select": "^5.7.5",
+    "vite": "^4.4.9"
   },
   "description": "glide-data-grid vue",
   "keywords": [
