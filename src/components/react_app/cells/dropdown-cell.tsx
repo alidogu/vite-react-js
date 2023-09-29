@@ -159,15 +159,18 @@ const renderer: CustomRenderer<DropdownCell> = {
     }),
   }),
   onPaste: (v, d) => {
-    const findValue = d.data.allowedValues?.find(
-      (x: any) =>
-        x.value.toString() == v ||
-        x.label.toLocaleLowerCase() == v.toLocaleLowerCase()
-    );
-    return {
-      ...d,
-      value: findValue ? findValue.value : 0,
-    };
+    console.log('aaaa',v, d)
+    if (!d.readonly) {
+      const findValue = d.allowedValues?.find(
+        (x: any) =>
+          x.value.toString() == v ||
+          x.label.toLocaleLowerCase() == v.toLocaleLowerCase()
+      );
+      return {
+        ...d,
+        value: findValue ? findValue.value : 0,
+      };
+    }
   },
 };
 
