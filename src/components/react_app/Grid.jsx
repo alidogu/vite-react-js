@@ -68,7 +68,7 @@ export default function Grid(props) {
     if (Type === "select" || Type === "dropdown" || Type === "checkbox") {
       const selectSource = props.columns[col].source;
       const dataRow = gridStore.GridData[row];
-
+      theme = dataRow.theme ?? undefined;
       let dataValue = "";
       let copyDataValue = "";
       if (dataRow[indexes[col]] !== undefined) {
@@ -94,12 +94,9 @@ export default function Grid(props) {
       };
     } else if (Type === "button") {
       const dataRow = gridStore.GridData[row];
-
+      theme = dataRow.theme ?? undefined;
       const dataValue = dataRow[indexes[col]];
 
-      theme = {
-        baseFontStyle: "700 12px",
-      };
       return {
         kind: GridCellKind.Custom,
         cursor: "pointer",
@@ -119,16 +116,13 @@ export default function Grid(props) {
       };
     } else if (Type === "bool" || Type === "boolen") {
       const dataRow = gridStore.GridData[row];
+      theme = dataRow.theme ?? undefined;
       //console.log("bool", typeof dataRow[indexes[col]]);
       let dataValue = false;
       if (typeof dataRow[indexes[col]] === "boolean") {
         dataValue = dataRow[indexes[col]];
       } else if (dataRow[indexes[col]] == 1) dataValue = true;
       else dataValue = false;
-
-      theme = {
-        textLight: "green",
-      };
 
       return {
         kind: GridCellKind.Boolean,
@@ -139,6 +133,7 @@ export default function Grid(props) {
       };
     } else if (Type === "number" || Type === "int") {
       const dataRow = gridStore.GridData[row];
+      theme = dataRow.theme ?? undefined;
       let dataValue = dataRow[indexes[col]] || 0;
       //console.log("dataValue", dataValue);
 
@@ -171,6 +166,7 @@ export default function Grid(props) {
       };
     } else if (Type === "money") {
       const dataRow = gridStore.GridData[row];
+      theme = dataRow.theme ?? undefined;
       let dataValue = dataRow[indexes[col]] || 0;
       //console.log("dataValue", dataValue);
 
@@ -207,17 +203,19 @@ export default function Grid(props) {
       };
     } else if (Type === "url") {
       const dataRow = gridStore.GridData[row];
+      theme = dataRow.theme ?? undefined;
       let dataValue = dataRow[indexes[col]] || "";
       return {
         kind: GridCellKind.Uri,
         allowOverlay: false,
         data: dataValue,
-        displayData: 'asas',
+        displayData: "asas",
         readonly: ReadOnly,
         themeOverride: theme,
       };
     } else if (Type === "bool") {
       const dataRow = gridStore.GridData[row];
+      theme = dataRow.theme ?? undefined;
       let dataValue = dataRow[indexes[col]] || false;
       return {
         kind: GridCellKind.Boolean,
@@ -228,6 +226,7 @@ export default function Grid(props) {
       };
     } else if (Type === "image") {
       const dataRow = gridStore.GridData[row];
+      theme = dataRow.theme ?? undefined;
       let dataValue = dataRow[indexes[col]] || false;
       return {
         kind: GridCellKind.Image,
@@ -239,8 +238,22 @@ export default function Grid(props) {
       };
     } else {
       const dataRow = gridStore.GridData[row];
-
       const dataValue = dataRow[indexes[col]] || "";
+      theme = dataRow.theme ?? undefined;
+       console.log("else theme", theme);
+      if (theme != undefined && theme.hasOwnProperty(indexes[col]))
+       { 
+         console.log("else dataRow", dataRow);
+         console.log("else dataValue", dataValue);
+       }
+      if (theme != undefined) {
+        console.log("else obj", Object.keys(theme));
+        console.log(
+          "else aa",
+          indexes[col],
+          theme.hasOwnProperty(indexes[col])
+        );
+      }
       //console.log('ReadOnly',ReadOnly)
       return {
         kind: GridCellKind.Text,
@@ -249,6 +262,7 @@ export default function Grid(props) {
         copyData: dataValue.toString(),
         displayData: dataValue.toString(),
         data: dataValue.toString(),
+        themeOverride: theme,
       };
     }
   }, []);
