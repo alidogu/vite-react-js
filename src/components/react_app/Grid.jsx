@@ -207,9 +207,9 @@ export default function Grid(props) {
       let dataValue = dataRow[indexes[col]] || "";
       return {
         kind: GridCellKind.Uri,
-        allowOverlay: false,
+        allowOverlay: true,
         data: dataValue,
-        displayData: "asas",
+        displayData: dataValue,
         readonly: ReadOnly,
         themeOverride: theme,
       };
@@ -240,20 +240,20 @@ export default function Grid(props) {
       const dataRow = gridStore.GridData[row];
       const dataValue = dataRow[indexes[col]] || "";
       theme = dataRow.theme ?? undefined;
-       console.log("else theme", theme);
-      if (theme != undefined && theme.hasOwnProperty(indexes[col]))
-       { 
-         console.log("else dataRow", dataRow);
-         console.log("else dataValue", dataValue);
-       }
-      if (theme != undefined) {
-        console.log("else obj", Object.keys(theme));
-        console.log(
-          "else aa",
-          indexes[col],
-          theme.hasOwnProperty(indexes[col])
-        );
-      }
+       //console.log("else theme", theme);
+      // if (theme != undefined && theme.hasOwnProperty(indexes[col]))
+      //  { 
+      //    console.log("else dataRow", dataRow);
+      //    console.log("else dataValue", dataValue);
+      //  }
+      // if (theme != undefined) {
+      //   console.log("else obj", Object.keys(theme));
+      //   console.log(
+      //     "else aa",
+      //     indexes[col],
+      //     theme.hasOwnProperty(indexes[col])
+      //   );
+      // }
       //console.log('ReadOnly',ReadOnly)
       return {
         kind: GridCellKind.Text,
@@ -406,14 +406,17 @@ export default function Grid(props) {
       //   getContent([args.location[0], args.location[1]])
       // );
       // console.log("onItemHovered columns", props.columns[args.location[0]].name);
+      const getCellTitle = props.columns[args.location[0]];
+      //console.log("getCellTitle",getCellTitle);
       const getCellData = getContent([args.location[0], args.location[1]]);
-      const CellTitle = getCellData.displayData || getCellData.copyData;
-      if (CellTitle) {
+      const CellValue = getCellData.displayData || getCellData.copyData;
+      if (CellValue) {
         window.clearTimeout(timeoutRef.current);
         setTooltip(undefined);
         timeoutRef.current = window.setTimeout(() => {
           setTooltip({
-            val: `${CellTitle} `,
+            title: `${getCellTitle.title}`,
+            val: `${CellValue} `,
             bounds: {
               // translate to react-laag types
               left: args.bounds.x,
@@ -490,6 +493,8 @@ export default function Grid(props) {
               borderRadius: 9,
             }}
           >
+            <b>{tooltip.title}</b>
+            <br />
             {tooltip.val}
           </div>
         )}
