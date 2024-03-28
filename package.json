@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.3.4",
+    "@linaria/react":"^6.1.0",
     "react-laag": "^2.0.5",
     "react-select": "^5.7.5",
     "vite": "^4.4.9"

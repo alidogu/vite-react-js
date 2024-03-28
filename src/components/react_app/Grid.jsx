@@ -7,17 +7,14 @@ import DataEditor, {
 import { useLayer } from "react-laag";
 import DropdownCellRenderer from "./cells/dropdown-cell";
 import ButtonCellRenderer from "./cells/button-cell";
+import DatePickerCell from "./cells/date-picker-cell";
 
 import "@glideapps/glide-data-grid/dist/index.css";
 
 import { useVueHooksInReact } from "../gridstore";
 
 export default function Grid(props) {
-  const cells = [
-    DropdownCellRenderer,
-    ButtonCellRenderer,
-    // DatePickerRenderer,
-  ];
+  const cells = [DropdownCellRenderer, ButtonCellRenderer, DatePickerCell];
 
   const { gridStore } = useVueHooksInReact();
   // console.log("getContent gridStore", gridStore.GridData);
@@ -213,6 +210,29 @@ export default function Grid(props) {
         readonly: ReadOnly,
         themeOverride: theme,
       };
+    } else if (Type === "date") {
+      const dataRow = gridStore.GridData[row];
+      theme = dataRow.theme ?? undefined;
+      let dataValue = dataRow[indexes[col]] || "";
+      console.log(
+        "date",
+        dataValue,
+        new Date(dataValue),
+        new Date(dataValue) 
+      );
+      return {
+        kind: GridCellKind.Custom,
+        allowOverlay: true,
+        copyData: dataValue,
+        themeOverride: theme,
+        data: {
+          kind: "date-picker-cell",
+          date: new Date(dataValue),
+          displayDate: dataValue,
+          format: "date",
+          readonly: ReadOnly,
+        },
+      };
     } else if (Type === "bool") {
       const dataRow = gridStore.GridData[row];
       theme = dataRow.theme ?? undefined;
@@ -240,9 +260,9 @@ export default function Grid(props) {
       const dataRow = gridStore.GridData[row];
       const dataValue = dataRow[indexes[col]] || "";
       theme = dataRow.theme ?? undefined;
-       //console.log("else theme", theme);
+      //console.log("else theme", theme);
       // if (theme != undefined && theme.hasOwnProperty(indexes[col]))
-      //  { 
+      //  {
       //    console.log("else dataRow", dataRow);
       //    console.log("else dataValue", dataValue);
       //  }
